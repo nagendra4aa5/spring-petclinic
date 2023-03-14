@@ -13,8 +13,9 @@ pipeline {
         }
         stage('build & sonar analysis') {
             steps {
-                 sh 'mvn clean package sonar:sonar -Dsonar.organization=nagendra4aa5 -Dsonar.projectKey=nag4a5'
-                
+                sh 'mvn package'
+                sh 'mvn ${params.MAVEN_GOAL}'
+                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nag4a5 -Dsonar.organization=nagendra4aa5'
             }
         }
         stage('post build') {
@@ -22,7 +23,7 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar',
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
-             }  
+            }  
        }
       }
 }
