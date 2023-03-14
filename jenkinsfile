@@ -11,14 +11,21 @@ pipeline {
                     branch: 'develop'
             }
         }
-        stage('build & sonar analysis') {
-            tools {
-                jdk 'jdk_17'
-            }
+        stage('package') {
             steps {
+                tools {
+                jdk 'JDK_17'
+                 }
                 sh 'mvn package'
-                sh 'mvn ${params.MAVEN_GOAL}'
-                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nag4a5 -Dsonar.organization=nagendra4aa5'
+                sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
+        stage('sonar analysis') {
+            steps {
+                // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nagendra4aa5 -Dsonar.organization=nag4a5'
+                }
             }
         }
         stage('post build') {
