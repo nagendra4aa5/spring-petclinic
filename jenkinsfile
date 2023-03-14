@@ -13,9 +13,7 @@ pipeline {
         }
         stage('package') {
             steps {
-                tools {
-                  jdk 'jdk_17'
-                 }
+                sh 'export PATH= "/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH'
                 sh 'mvn package'
                 sh "mvn ${params.MAVEN_GOAL}"
             }
