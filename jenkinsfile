@@ -13,7 +13,6 @@ pipeline {
         }
         stage('package') {
             steps {
-                sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH'
                 sh 'mvn package'
                 sh 'mvn ${params.MAVEN_GOAL}'
             }
@@ -24,6 +23,6 @@ pipeline {
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }  
-       }
+        }
     }
 }
