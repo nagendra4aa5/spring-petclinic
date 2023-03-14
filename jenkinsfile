@@ -14,6 +14,7 @@ pipeline {
         stage('build & sonar analysis') {
             tools {
                 jdk 'jdk_17'
+            }
             steps {
                 sh 'mvn package'
                 sh 'mvn ${params.MAVEN_GOAL}'
@@ -27,6 +28,5 @@ pipeline {
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }  
        }
-      }
-}
+    }
 }
