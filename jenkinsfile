@@ -18,14 +18,6 @@ pipeline {
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
-        stage('sonar analysis') {
-            steps {
-                // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nagendra4aa5 -Dsonar.organization=nag4a5'
-                }
-            }
-        }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar',
