@@ -13,8 +13,8 @@ pipeline {
         }
         stage('package') {
             steps {
-                sh 'mvn package'
-                sh 'mvn ${params.MAVEN_GOAL}'
+                sh './mvnw package'
+                sh './mvnw ${params.MAVEN_GOAL}'
             }
         }
         stage('post build') {
