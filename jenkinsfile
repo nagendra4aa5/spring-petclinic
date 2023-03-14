@@ -12,9 +12,13 @@ pipeline {
             }
         }
         stage('package') {
+            tools {
+                jdk 'jdk_17'
+                maven 'maven_3.9.0'
+            }
             steps {
-                sh './mvnw package'
-                sh './mvnw ${params.MAVEN_GOAL}'
+                sh 'mvn package'
+                sh 'mvn ${params.MAVEN_GOAL}'
             }
         }
         stage('post build') {
