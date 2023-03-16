@@ -1,25 +1,29 @@
 pipeline {
-    agent { label 'maven2' }
+    agent {label 'maven2'}
     triggers { pollSCM ('* * * * *') }
-    parameters {
-        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'Maven Goal')
-    }
     stages {
         stage('vcs') {
             steps {
                 git url: 'https://github.com/nagendra4aa5/spring-petclinic.git',
-                    branch: 'develop'
+                branch: 'develop'
             }
         }
-        stage('package') {
-            tools {
-                jdk 'jdk_17'
-                maven 'maven_3.9.0'
-            }
+        stage('sonarcloud') {
             steps {
-                sh 'mvn package'
-                sh 'mvn ${params.MAVEN_GOAL}'
+                sh './mvnw clean verify sonar:sonar \
+                    -Dsonar.login=5327a059d98c30c9fdf4a6db682f762077452df5 \
+                    -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.organization=nagendra4aa5\
+                    -Dsonar.projectKey=nag4a5'
             }
         }
-    }  
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
+                                 onlyIfSuccessful: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'
+            }
+        }
+       
+    }
 }
