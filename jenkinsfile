@@ -54,7 +54,7 @@ pipeline {
                  )
              }
          }
-        stage('post build action') {
+        stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar',
                 onlyIfSuccessful: true
