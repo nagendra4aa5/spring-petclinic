@@ -8,52 +8,6 @@ pipeline {
                 branch: 'release'
             }
         }
-        stage('sonarcloud') {
-            steps {
-                sh './mvnw package sonar:sonar \
-                    -Dsonar.login=5327a059d98c30c9fdf4a6db682f762077452df5 \
-                    -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.organization=nagendra4aa5\
-                    -Dsonar.projectKey=nag4a5'
-            }
-        }
-        stage ('Artifactory configuration') {
-            steps {
-                 rtServer (
-                     id: "ARTIFACTORY_SERVER",
-                     url: 'https://nagendra4a5.jfrog.io/',
-                     credentialsId: 'jfrog'
-                 )
-                 rtMavenDeployer (
-                     id: "MAVEN_DEPLOYER",
-                     serverId: "ARTIFACTORY_SERVER",
-                     releaseRepo: 'libs-release',
-                     snapshotRepo: 'libs-snapshot'
-                 )
-                 rtMavenResolver (
-                     id: "MAVEN_RESOLVER",
-                     serverId: "ARTIFACTORY_SERVER",
-                     releaseRepo: 'libs-release',
-                     snapshotRepo: 'libs-snapshot'
-                 )
-             }
-         }
-        stage('package') {
-             tools {
-                 jdk 'jdk_17'
-             }
-            steps {
-                 rtMavenRun (
-                     tool: 'maven',
-                     pom: 'pom.xml',
-                     goals: 'package',
-                     deployerId: "MAVEN_DEPLOYER"
-                 )
-                 rtPublishBuildInfo (
-                     serverId: "ARTIFACTORY_SERVER"
-                 )
-             }
-         }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar',
