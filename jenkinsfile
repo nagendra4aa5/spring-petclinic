@@ -5,7 +5,7 @@ pipeline {
         stage('vcs') {
             steps {
                 git url: 'https://github.com/nagendra4aa5/spring-petclinic.git',
-                branch: 'develop'
+                branch: 'release'
             }
         }
         stage('sonarcloud') {
