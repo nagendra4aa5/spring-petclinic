@@ -10,7 +10,7 @@ pipeline {
         }
         stage('sonarcloud') {
             steps {
-                sh './mvnw package sonar:sonar \
+                sh './mvnw clean package sonar:sonar \
                     -Dsonar.login=5327a059d98c30c9fdf4a6db682f762077452df5 \
                     -Dsonar.host.url=https://sonarcloud.io \
                     -Dsonar.organization=nagendra4aa5\
