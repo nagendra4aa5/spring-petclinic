@@ -8,11 +8,25 @@ pipeline {
                 branch: 'release'
             }
         }
+        stage('sonarcloud') {
+            steps {
+                sh './mvnw package sonar:sonar \
+                    -Dsonar.login=5327a059d98c30c9fdf4a6db682f762077452df5 \
+                    -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.organization=nagendra4aa5\
+                    -Dsonar.projectKey=nag4a5'
+            }
+        }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar',
                 onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
+            }
+        }
+        stage('s3 bucket deploy') {
+            steps {
+                sh 'aws s3 cp spring-petclinic-2.7.0-SNAPSHOT.jar s3://spcbucket4a5/'
             }
         }
        
