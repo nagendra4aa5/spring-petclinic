@@ -26,7 +26,8 @@ pipeline {
         }
         stage('s3 bucket deploy') {
             steps {
-                sh 'aws s3 cp spring-petclinic-2.7.0-SNAPSHOT.jar s3://spcbucket4a5/'
+                sh 'aws s3 cp /home/ubuntu/workspace/workspace/spc_develop/target/spring-petclinic-2.7.0-SNAPSHOT.jar s3://nnp4
+a5'
             }
         }
        
