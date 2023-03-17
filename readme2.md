@@ -32,10 +32,7 @@ mvn --version
 
 ```
 # To run with sonar cloud, need to add sonar cloud account and configure it with jenkins
-[!To open[sonarcloud page](https://sonarcloud.io/)]
-<img width="1042" 
-alt=sonar1
-src="D:\spc documentation\sonar1.png"
+To open[![sonarcloud page](https://sonarcloud.io/)]
 
 
 
